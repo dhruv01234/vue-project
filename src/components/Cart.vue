@@ -1,6 +1,9 @@
 <template>
     <h1>Cart</h1>
-    <div>
+    <div v-if="loading" class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div v-else>
         <ul v-for="(product,id) in cart" :key="id">
             <div class="cart">
                 <img :src="product.image" :alt="product.name" :width="200">
@@ -25,6 +28,7 @@ import {db} from '@/main';
         data(){
             return{
                 cart:[],
+                loading:true,
             }
         },
         methods:{
@@ -63,8 +67,13 @@ import {db} from '@/main';
                         this.$router.push('/login')
                     }
                 })
-                
+                this.loading = true;
         },
+        mounted(){
+            setTimeout(()=>{
+                this.loading = false;
+            },1000)
+        }
     }
 </script>
 <style scoped>

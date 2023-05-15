@@ -1,6 +1,8 @@
 <template>
-    
-    <form class="login" @submit.prevent="login">
+    <div v-if="loading" class="loading">
+        <div class="spinner"></div>
+    </div>
+    <form v-else class="login" @submit.prevent="login">
         <h1>Login</h1>
         <input type="text" v-model="email"/>
         <br>
@@ -21,6 +23,7 @@ export default{
         return{
             email:"",
             pass:"",
+            loading:true,
         }
     },
     beforeMount(){
@@ -29,6 +32,7 @@ export default{
                         this.$router.push('/')
                     
                 })
+                this.loading = true;
         },
     methods:{
         async login(){
@@ -39,7 +43,12 @@ export default{
             alert(error.message)
         }
         }
-    }
+    },
+    mounted(){
+            setTimeout(()=>{
+                this.loading = false;
+            },1000)
+        }
 }
 </script>
 

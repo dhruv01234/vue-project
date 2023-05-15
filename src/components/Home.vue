@@ -1,6 +1,9 @@
 <template>
     <h1 v-if="user">Welcome {{userName}}</h1>
-    <div class="products">
+    <div v-if="loading" class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div v-else class="products">
         <ul v-for="product in result['data']" :key="product.id">
             <div class="product">
                 <img :src="product.image" :alt="product.title" :width="200">
@@ -16,7 +19,7 @@
             
         </ul>
     </div>
-    </template>
+</template>
     
     <script>
     import firebase from 'firebase/app';
@@ -32,6 +35,7 @@
                 result:[],
                 userName:"",
                 cart:{},
+                loading:true,
             }
         },
         computed:{
@@ -107,14 +111,19 @@
                         this.$router.push('/login')
                     }
                 })
+                this.loding = true;
         },
         async mounted(){
+            setTimeout(() => {
+                this.loading=false
+            }, 1000)
             this.result = await axios.get('https://fakestoreapi.com/products')
             db.collection('userCart').doc(this.user.uid).get().then((doc)=>{
                 if(doc.exists){
                     this.cart = doc.data();
                 }
             })
+            
         },
     
     }

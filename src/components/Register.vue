@@ -1,5 +1,8 @@
 <template>
-    <div class="register">
+  <div v-if="loading" class="loading">
+    <div class="spinner"></div>
+</div>
+    <div v-else class="register">
       <h1>Register</h1>
       <form @submit.prevent="register">
         <label for="name">Name:</label>
@@ -29,6 +32,7 @@
         email: '',
         password: '',
         name:'',
+        loading:true,
       }
     },
     beforeMount(){
@@ -37,6 +41,7 @@
                         this.$router.push('/')
                     
                 })
+                this.loading = true;
         },
     methods: {
       register() {
@@ -55,7 +60,12 @@
           })
           
       }
-    }
+    },
+    mounted(){
+            setTimeout(()=>{
+                this.loading = false;
+            },1000)
+        }
   }
   </script>
   <style scoped>

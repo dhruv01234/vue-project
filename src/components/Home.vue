@@ -38,12 +38,11 @@
                 loading:true,
             }
         },
-        computed:{
-           
-        },
-        methods:{  
+        
+        methods:{
             changeQuantity(productId,x){
-                this.cart[productId].quantity += x;
+                if(this.cart[productId].quantity+x<1) this.cart[productId].quantity = 0;
+                else this.cart[productId].quantity += x;
                 const currentUser = firebase.auth().currentUser;
                 if(this.cart[productId].quantity==0 && currentUser){
                     db.collection('userCart').doc(currentUser.uid).update({
